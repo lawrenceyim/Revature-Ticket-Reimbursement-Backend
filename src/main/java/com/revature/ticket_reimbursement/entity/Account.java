@@ -3,12 +3,12 @@ package com.revature.ticket_reimbursement.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user")
-public class User {
-    @Column(name = "user_id")
+@Table(name = "account")
+public class Account {
+    @Column(name = "account_id")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int userId;
+    private int accountId;
     @Column(name = "employee_role")
     private String employeeRole;
     @Column(name = "first_name")
