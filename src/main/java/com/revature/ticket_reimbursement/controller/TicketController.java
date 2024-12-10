@@ -1,5 +1,6 @@
 package com.revature.ticket_reimbursement.controller;
 
+import com.revature.ticket_reimbursement.TicketStatus;
 import com.revature.ticket_reimbursement.entity.Ticket;
 import com.revature.ticket_reimbursement.service.EmployeeService;
 import com.revature.ticket_reimbursement.service.FinanceManagerService;
@@ -25,4 +26,18 @@ public class TicketController {
         return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getAllTickets());
     }
 
+    @GetMapping("/approved")
+    public ResponseEntity<List<Ticket>> getAllApprovedTickets() {
+        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getAllTicketsByStatus(TicketStatus.APPROVED));
+    }
+
+    @GetMapping("/denied")
+    public ResponseEntity<List<Ticket>> getAllDeniedTickets() {
+        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getAllTicketsByStatus(TicketStatus.DENIED));
+    }
+
+    @GetMapping("/pending")
+    public ResponseEntity<List<Ticket>> getAllPendingTickets() {
+        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getAllTicketsByStatus(TicketStatus.PENDING));
+    }
 }

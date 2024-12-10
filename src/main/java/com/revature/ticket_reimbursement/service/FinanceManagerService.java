@@ -1,5 +1,6 @@
 package com.revature.ticket_reimbursement.service;
 
+import com.revature.ticket_reimbursement.TicketStatus;
 import com.revature.ticket_reimbursement.entity.Ticket;
 import com.revature.ticket_reimbursement.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +17,8 @@ public class FinanceManagerService {
         return ticketRepository.findAll();
     }
 
-    public List<Ticket> getAllApprovedTickets() {
-        return null;
-    }
-
-    public List<Ticket> getAllDeniedTickets() {
-        return null;
-    }
-
-    public List<Ticket> getAllPendingTickets() {
-        return null;
+    public List<Ticket> getAllTicketsByStatus(TicketStatus status) {
+        return ticketRepository.findAllByTicketStatus(status);
     }
 
     // add in concurrency or figure out a way to make sure multiple finance managers don't work on the same ticket
