@@ -1,5 +1,6 @@
 package com.revature.ticket_reimbursement.entity;
 
+import com.revature.ticket_reimbursement.TicketStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -21,8 +22,10 @@ public class Ticket {
     private String description;
     @Column(name = "reimbursement_type")
     private String reimbursementType;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private TicketStatus status;
     @Column(name = "reimbursement_amount")
     private BigDecimal reimbursementAmount;
     @Column(name = "decided_on")
@@ -32,8 +35,8 @@ public class Ticket {
 
     public Ticket() { }
 
-    public Ticket(Integer ticketId, Integer decidedBy, Integer madeBy, String description, String reimbursementType, String status,
-                  BigDecimal reimbursementAmount, LocalDateTime decidedOn, LocalDateTime madeOn) {
+    public Ticket(Integer ticketId, Integer decidedBy, Integer madeBy, String description, String reimbursementType,
+                  TicketStatus status, BigDecimal reimbursementAmount, LocalDateTime decidedOn, LocalDateTime madeOn) {
         this.ticketId = ticketId;
         this.decidedBy = decidedBy;
         this.madeBy = madeBy;
@@ -85,11 +88,11 @@ public class Ticket {
         this.reimbursementType = reimbursementType;
     }
 
-    public String getStatus() {
+    public TicketStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TicketStatus status) {
         this.status = status;
     }
 
