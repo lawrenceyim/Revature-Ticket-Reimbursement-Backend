@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 import java.net.URI;
@@ -66,5 +67,62 @@ public class CreateTicketTests {
         JSONObject expectedJsonObject = new JSONObject(expectedResponseJson);
         JSONObject actualJsonObject = new JSONObject(response.body());
         JsonObjectTest.assertTrue(expectedJsonObject, actualJsonObject);
+    }
+
+    @Test
+    public void createTicketWithInvalidAmount() throws IOException, InterruptedException {
+        String createTicketJson = """
+                {
+                    "madeBy": 9998,
+                    "description": "Hotel.",
+                    "reimbursementType": "LODGING",
+                    "reimbursementAmount": "0"
+                }""";
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/tickets/"))
+                .POST(HttpRequest.BodyPublishers.ofString(createTicketJson))
+                .header("Content-Type", "application/json")
+                .build();
+        HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
+        int status = response.statusCode();
+        StatusCodeTest.assertEquals(HttpStatus.BAD_REQUEST.value(), status);
+    }
+
+    @Test
+    public void createTicketWithInvalidType() throws IOException, InterruptedException {
+        String createTicketJson = """
+                {
+                    "madeBy": 9998,
+                    "description": "Hotel.",
+                    "reimbursementType": "LODGIN",
+                    "reimbursementAmount": "100"
+                }""";
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/tickets/"))
+                .POST(HttpRequest.BodyPublishers.ofString(createTicketJson))
+                .header("Content-Type", "application/json")
+                .build();
+        HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
+        int status = response.statusCode();
+        StatusCodeTest.assertEquals(HttpStatus.BAD_REQUEST.value(), status);
+    }
+
+    @Test
+    public void createTicketWithInvalidDescription() throws IOException, InterruptedException {
+        String createTicketJson = """
+                {
+                    "madeBy": 9998,
+                    "description": "",
+                    "reimbursementType": "LODGING",
+                    "reimbursementAmount": "100"
+                }""";
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/tickets/"))
+                .POST(HttpRequest.BodyPublishers.ofString(createTicketJson))
+                .header("Content-Type", "application/json")
+                .build();
+        HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
+        int status = response.statusCode();
+        StatusCodeTest.assertEquals(HttpStatus.BAD_REQUEST.value(), status);
     }
 }

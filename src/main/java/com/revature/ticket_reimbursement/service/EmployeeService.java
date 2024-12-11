@@ -22,6 +22,10 @@ public class EmployeeService {
     private TicketRepository ticketRepository;
 
     public Ticket createTicket(Ticket ticket) throws BadRequestException {
+        if (ticket.getMadeBy() == null) {
+            throw new BadRequestException("Ticket must have an associated account ID.");
+        }
+
         Optional<Account> madeByAccount = accountRepository.findById(ticket.getMadeBy());
         if (madeByAccount.isEmpty()) {
             throw new BadRequestException("Associated account does not exist.");
@@ -40,8 +44,9 @@ public class EmployeeService {
         }
 
         ticket.setStatus(TicketStatus.PENDING);
-        financeManagerService.addPendingTicketToQueue(ticket.getTicketId());
-        return ticketRepository.save(ticket);
+        Ticket createdTicket = ticketRepository.save(ticket);
+        financeManagerService.addPendingTicketToQueue(createdTicket.getTicketId());
+        return createdTicket;
     }
 
     public List<Ticket> getAllTickets(int accountId) {
