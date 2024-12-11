@@ -25,12 +25,6 @@ public class GetTicketTests {
     HttpClient webClient;
     ObjectMapper objectMapper;
 
-    /**
-     * Before every test, reset the database, restart the Javalin app, and create a new webClient and ObjectMapper
-     * for interacting locally on the web.
-     *
-     * @throws InterruptedException
-     */
     @BeforeEach
     public void setUp() throws InterruptedException {
         webClient = HttpClient.newHttpClient();
