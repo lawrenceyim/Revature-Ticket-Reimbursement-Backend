@@ -7,13 +7,16 @@ import com.revature.ticket_reimbursement.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Optional;
+import java.util.Queue;
 
 @Service
 public class FinanceManagerService {
     @Autowired
     private TicketRepository ticketRepository;
+    private final Queue<Integer> pendingTicketIdQueue = new ArrayDeque<>();
 
     public List<Ticket> getAllTickets() {
         return ticketRepository.findAll();
@@ -23,9 +26,31 @@ public class FinanceManagerService {
         return ticketRepository.findAllByTicketStatus(status);
     }
 
-    // add in concurrency or figure out a way to make sure multiple finance managers don't work on the same ticket
-    // probably use a queue
+    public void addPendingTicketToQueue(int ticketId) {
+        pendingTicketIdQueue.add(ticketId);
+    }
+
     public Ticket getNextPendingTicket() {
+        // Check if the ticket queue is empty when a user requests a pending ticket
+        // The queue cannot be filled at instantiation of the service component because it results in the queue being empty.
+        // Possible reason: service is instantiated before the H2 database is instantiated.
+        // Possible issue: this may result in multiple users getting the same pending ticket.
+        // Possible fix: add a service that returns a ticket to the queue only after a set period of time if it still
+        // has a PENDING status.
+        if (pendingTicketIdQueue.isEmpty()) {
+            List<Ticket> pendingTickets = ticketRepository.findAllByTicketStatus(TicketStatus.PENDING);
+            for (Ticket ticket : pendingTickets) {
+                pendingTicketIdQueue.add(ticket.getTicketId());
+            }
+        }
+        while (!pendingTicketIdQueue.isEmpty()) {
+            int ticketID = pendingTicketIdQueue.peek();
+            Ticket ticket = ticketRepository.findById(ticketID).get();
+            if (!ticket.getStatus().equals(TicketStatus.PENDING)) {
+                continue;
+            }
+            return ticket;
+        }
         return null;
     }
 

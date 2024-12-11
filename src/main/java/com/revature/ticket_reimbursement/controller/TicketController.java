@@ -1,10 +1,11 @@
 package com.revature.ticket_reimbursement.controller;
 
-import com.revature.ticket_reimbursement.enums.TicketStatus;
 import com.revature.ticket_reimbursement.entity.Ticket;
+import com.revature.ticket_reimbursement.enums.TicketStatus;
 import com.revature.ticket_reimbursement.exception.BadRequestException;
 import com.revature.ticket_reimbursement.service.EmployeeService;
 import com.revature.ticket_reimbursement.service.FinanceManagerService;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,12 +52,6 @@ public class TicketController {
         return ResponseEntity.status(HttpStatus.OK).body(employeeService.getAllTickets(accountId));
     }
 
-    @GetMapping("/{ticketId}")
-    public ResponseEntity<Ticket> getTicketById(@PathVariable int ticketId) {
-        Ticket ticket = financeManagerService.getTicketById(ticketId);
-        return ResponseEntity.status(HttpStatus.OK).body(ticket);
-    }
-
     @GetMapping("/approved")
     public ResponseEntity<List<Ticket>> getAllApprovedTickets() {
         return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getAllTicketsByStatus(TicketStatus.APPROVED));
@@ -67,8 +62,19 @@ public class TicketController {
         return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getAllTicketsByStatus(TicketStatus.DENIED));
     }
 
+    @GetMapping("/next")
+    public ResponseEntity<Ticket> getNextPendingTicket() throws JSONException {
+        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getNextPendingTicket());
+    }
+
     @GetMapping("/pending")
     public ResponseEntity<List<Ticket>> getAllPendingTickets() {
         return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getAllTicketsByStatus(TicketStatus.PENDING));
+    }
+
+    @GetMapping("/{ticketId}")
+    public ResponseEntity<Ticket> getTicketById(@PathVariable int ticketId) {
+        Ticket ticket = financeManagerService.getTicketById(ticketId);
+        return ResponseEntity.status(HttpStatus.OK).body(ticket);
     }
 }

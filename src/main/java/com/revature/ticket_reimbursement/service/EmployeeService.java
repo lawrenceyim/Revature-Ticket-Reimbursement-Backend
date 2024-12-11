@@ -17,6 +17,8 @@ public class EmployeeService {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
+    private FinanceManagerService financeManagerService;
+    @Autowired
     private TicketRepository ticketRepository;
 
     public Ticket createTicket(Ticket ticket) throws BadRequestException {
@@ -38,6 +40,7 @@ public class EmployeeService {
         }
 
         ticket.setStatus(TicketStatus.PENDING);
+        financeManagerService.addPendingTicketToQueue(ticket.getTicketId());
         return ticketRepository.save(ticket);
     }
 
