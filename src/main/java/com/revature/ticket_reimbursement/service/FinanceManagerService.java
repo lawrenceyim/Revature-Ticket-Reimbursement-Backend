@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FinanceManagerService {
@@ -25,5 +26,9 @@ public class FinanceManagerService {
     // probably use a queue
     public Ticket getNextPendingTicket() {
         return null;
+    }
+
+    public Optional<Ticket> getTicketById(int ticketId) {
+        return ticketRepository.findById(ticketId);
     }
 }
