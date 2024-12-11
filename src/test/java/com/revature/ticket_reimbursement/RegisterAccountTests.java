@@ -1,6 +1,7 @@
 package com.revature.ticket_reimbursement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.ticket_reimbursement.utils.JsonResponseTest;
 import com.revature.ticket_reimbursement.utils.StatusCodeTest;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,8 +67,6 @@ public class RegisterAccountTests {
                 """;
         JSONObject expectedJsonObject = new JSONObject(expectedResponseJson);
         JSONObject actualJsonObject = new JSONObject(response.body());
-        // .equals() compares reference instead of actual content. Ignore IDE suggestion to simplify using equal()
-        Assertions.assertTrue(expectedJsonObject.toString().equals(actualJsonObject.toString()),
-                "Expected:\n" + expectedJsonObject + "\nActual:\n" + actualJsonObject);
+        JsonResponseTest.assertTrue(expectedJsonObject, actualJsonObject);
     }
 }

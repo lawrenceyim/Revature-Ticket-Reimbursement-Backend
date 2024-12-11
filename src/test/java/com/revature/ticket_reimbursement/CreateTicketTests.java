@@ -7,6 +7,8 @@ import com.revature.ticket_reimbursement.enums.ReimbursementType;
 import com.revature.ticket_reimbursement.enums.TicketStatus;
 import com.revature.ticket_reimbursement.utils.JsonResponseTest;
 import com.revature.ticket_reimbursement.utils.StatusCodeTest;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +25,7 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetTicketTests {
+public class CreateTicketTests {
     ApplicationContext app;
     HttpClient webClient;
     ObjectMapper objectMapper;
@@ -44,24 +46,33 @@ public class GetTicketTests {
     }
 
     @Test
-    public void GetAllTicketTest() throws IOException, InterruptedException {
+    public void createValidTicketTest() throws IOException, InterruptedException, JSONException {
+        String createTicketJson = """
+                {
+                    "madeBy": 9998,
+                    "description": "Hotel.",
+                    "reimbursementType": "LODGING",
+                    "reimbursementAmount": "100"
+                }""";
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/tickets/"))
+                .POST(HttpRequest.BodyPublishers.ofString(createTicketJson))
+                .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
         StatusCodeTest.assertEquals(200, status);
-
-        List<Ticket> expectedResult = new ArrayList<Ticket>();
-        expectedResult.add(new Ticket(9997, 9997, "Test example of a pending ticket.",
-                ReimbursementType.TRAVEL, TicketStatus.PENDING, new BigDecimal("999.99")));
-        expectedResult.add(new Ticket(9998, 9997, "Test example of a denied ticket.",
-                ReimbursementType.TRAVEL, TicketStatus.DENIED, new BigDecimal("999.99")));
-        expectedResult.add(new Ticket(9999, 9997, "Test example of an approved ticket.",
-                ReimbursementType.TRAVEL, TicketStatus.APPROVED, new BigDecimal("999.99")));
-
-        List<Ticket> actualResult = objectMapper.readValue(response.body(), new TypeReference<>() {});
-        Assertions.assertEquals(expectedResult, actualResult, "Expected = " + expectedResult +
-                ", Actual = " + actualResult);
+        String expectedResponseJson = """
+                {
+                    "ticketId": 1,
+                    "madeBy": 9998,
+                    "description": "Hotel.",
+                    "reimbursementType": "LODGING",
+                    "status": "PENDING",
+                    "reimbursementAmount": 100
+                }""";
+        JSONObject expectedJsonObject = new JSONObject(expectedResponseJson);
+        JSONObject actualJsonObject = new JSONObject(response.body());
+        JsonResponseTest.assertTrue(expectedJsonObject, actualJsonObject);
     }
 }
