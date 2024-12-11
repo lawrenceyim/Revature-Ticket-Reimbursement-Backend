@@ -47,4 +47,8 @@ public class EmployeeService {
     public List<Ticket> getAllTickets(int accountId) {
         return ticketRepository.findAllByAccountId(accountId);
     }
+
+    public List<Ticket> getAllTicketsByStatus(int accountId, TicketStatus status) {
+        return ticketRepository.findAllByAccountIdAndTicketStatus(accountId, status);
+    }
 }

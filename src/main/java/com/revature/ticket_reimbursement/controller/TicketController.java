@@ -52,6 +52,13 @@ public class TicketController {
         return ResponseEntity.status(HttpStatus.OK).body(employeeService.getAllTickets(accountId));
     }
 
+    @GetMapping("/accounts/{accountId}/{status}")
+    public ResponseEntity<List<Ticket>> getAllTicketsByAccountIdAndStatus(@PathVariable int accountId,
+                                                                          @PathVariable TicketStatus status) {
+        return ResponseEntity.status(HttpStatus.OK).body(employeeService.getAllTicketsByStatus(accountId, status));
+    }
+
+
     @GetMapping("/approved")
     public ResponseEntity<List<Ticket>> getAllApprovedTickets() {
         return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getAllTicketsByStatus(TicketStatus.APPROVED));
