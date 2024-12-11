@@ -37,7 +37,7 @@ public class TicketController {
         }
     }
 
-    @PutMapping("/")
+    @PatchMapping("/")
     public ResponseEntity<Ticket> updateTicket(@RequestBody Ticket ticket) {
         try {
             Ticket updatedTicket = financeManagerService.updateTicket(ticket);
