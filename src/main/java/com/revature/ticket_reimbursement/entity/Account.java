@@ -25,6 +25,8 @@ public class Account {
     @Column(name = "username")
     private String username;
 
+    private static final int MAX_FIRST_NAME_LENGTH = 100;
+    private static final int MAX_LAST_NAME_LENGTH = 100;
     private static final int MIN_PASSWORD_LENGTH = 8;
     private static final int MAX_PASSWORD_LENGTH = 100;
     private static final int MIN_USERNAME_LENGTH = 8;
@@ -64,6 +66,22 @@ public class Account {
             return false;
         }
         return username.length() >= MIN_USERNAME_LENGTH && username.length() <= MAX_USERNAME_LENGTH;
+    }
+
+    @JsonIgnore
+    public boolean isFirstNameValid(){
+        if (firstName == null) {
+            return false;
+        }
+        return !firstName.isEmpty() && firstName.length() <= MAX_FIRST_NAME_LENGTH;
+    }
+
+    @JsonIgnore
+    public boolean isLastNameValid() {
+        if (lastName == null) {
+            return false;
+        }
+        return !lastName.isEmpty() && lastName.length() <= MAX_LAST_NAME_LENGTH;
     }
 
     public int getAccountId() {

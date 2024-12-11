@@ -15,21 +15,24 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-   public Account createAccount(Account account) throws BadRequestException {
-       if (!account.isPasswordValid() || !account.isUsernameValid()) {
-           throw new BadRequestException("Invalid password or username.");
-       }
+    public Account createAccount(Account account) throws BadRequestException {
+        if (!account.isPasswordValid() ||
+                !account.isUsernameValid() ||
+                !account.isFirstNameValid() ||
+                !account.isLastNameValid()) {
+            throw new BadRequestException("Invalid account details.");
+        }
 
-       Optional<Account> accountInDatabase = accountRepository.findByUsername(account.getUsername());
-       if (accountInDatabase.isPresent()) {
+        Optional<Account> accountInDatabase = accountRepository.findByUsername(account.getUsername());
+        if (accountInDatabase.isPresent()) {
             throw new BadRequestException("Account with username already exists.");
-       }
+        }
 
-       account.setEmployeeRole(EmployeeRole.EMPLOYEE);
-       return accountRepository.save(account);
-   }
+        account.setEmployeeRole(EmployeeRole.EMPLOYEE);
+        return accountRepository.save(account);
+    }
 
-   public List<Account> getAllAccounts() {
-       return accountRepository.findAll();
-   }
+    public List<Account> getAllAccounts() {
+        return accountRepository.findAll();
+    }
 }

@@ -70,7 +70,7 @@ public class CreateTicketTests {
     }
 
     @Test
-    public void createTicketWithInvalidAmount() throws IOException, InterruptedException {
+    public void createTicketWithInvalidAmountTest() throws IOException, InterruptedException {
         String createTicketJson = """
                 {
                     "madeBy": 9998,
@@ -89,7 +89,7 @@ public class CreateTicketTests {
     }
 
     @Test
-    public void createTicketWithInvalidType() throws IOException, InterruptedException {
+    public void createTicketWithInvalidTypeTest() throws IOException, InterruptedException {
         String createTicketJson = """
                 {
                     "madeBy": 9998,
@@ -108,7 +108,7 @@ public class CreateTicketTests {
     }
 
     @Test
-    public void createTicketWithInvalidDescription() throws IOException, InterruptedException {
+    public void createTicketWithInvalidDescriptionTest() throws IOException, InterruptedException {
         String createTicketJson = """
                 {
                     "madeBy": 9998,
