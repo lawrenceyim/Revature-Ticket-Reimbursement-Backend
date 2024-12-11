@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/tickets")
@@ -21,6 +20,11 @@ public class TicketController {
     private EmployeeService employeeService;
     @Autowired
     private FinanceManagerService financeManagerService;
+
+    @GetMapping("/")
+    public ResponseEntity<List<Ticket>> getAllTickets() {
+        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getAllTickets());
+    }
 
     @PostMapping("/")
     public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket) {
@@ -32,9 +36,14 @@ public class TicketController {
         }
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<Ticket>> getAllTickets() {
-        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getAllTickets());
+    @PutMapping("/")
+    public ResponseEntity<Ticket> updateTicket(@RequestBody Ticket ticket) {
+        try {
+            Ticket updatedTicket = financeManagerService.updateTicket(ticket);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedTicket);
+        } catch (BadRequestException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @GetMapping("/accounts/{accountId}")
@@ -44,8 +53,8 @@ public class TicketController {
 
     @GetMapping("/{ticketId}")
     public ResponseEntity<Ticket> getTicketById(@PathVariable int ticketId) {
-        Optional<Ticket> ticket = financeManagerService.getTicketById(ticketId);
-        return ResponseEntity.status(HttpStatus.OK).body(ticket.get());
+        Ticket ticket = financeManagerService.getTicketById(ticketId);
+        return ResponseEntity.status(HttpStatus.OK).body(ticket);
     }
 
     @GetMapping("/approved")
