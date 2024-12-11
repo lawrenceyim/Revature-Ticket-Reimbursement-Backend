@@ -3,6 +3,7 @@ package com.revature.ticket_reimbursement;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ticket_reimbursement.entity.Ticket;
+import com.revature.ticket_reimbursement.enums.TicketStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

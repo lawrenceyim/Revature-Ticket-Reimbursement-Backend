@@ -1,6 +1,6 @@
 package com.revature.ticket_reimbursement.controller;
 
-import com.revature.ticket_reimbursement.TicketStatus;
+import com.revature.ticket_reimbursement.enums.TicketStatus;
 import com.revature.ticket_reimbursement.entity.Ticket;
 import com.revature.ticket_reimbursement.service.EmployeeService;
 import com.revature.ticket_reimbursement.service.FinanceManagerService;

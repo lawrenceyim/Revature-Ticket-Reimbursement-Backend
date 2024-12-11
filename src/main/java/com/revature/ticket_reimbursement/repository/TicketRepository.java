@@ -1,6 +1,6 @@
 package com.revature.ticket_reimbursement.repository;
 
-import com.revature.ticket_reimbursement.TicketStatus;
+import com.revature.ticket_reimbursement.enums.TicketStatus;
 import com.revature.ticket_reimbursement.entity.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

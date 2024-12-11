@@ -1,6 +1,6 @@
 package com.revature.ticket_reimbursement.entity;
 
-import com.revature.ticket_reimbursement.TicketStatus;
+import com.revature.ticket_reimbursement.enums.TicketStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

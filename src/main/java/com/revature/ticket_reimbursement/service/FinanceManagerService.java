@@ -1,6 +1,6 @@
 package com.revature.ticket_reimbursement.service;
 
-import com.revature.ticket_reimbursement.TicketStatus;
+import com.revature.ticket_reimbursement.enums.TicketStatus;
 import com.revature.ticket_reimbursement.entity.Ticket;
 import com.revature.ticket_reimbursement.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;

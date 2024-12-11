@@ -27,7 +27,19 @@ public class Account {
     @Column(name = "username")
     private String username;
 
+    private static final int MIN_PASSWORD_LENGTH = 8;
+    private static final int MAX_PASSWORD_LENGTH = 100;
+    private static final int MIN_USERNAME_LENGTH = 8;
+    private static final int MAX_USERNAME_LENGTH = 50;
+
     public Account() {
+    }
+
+    public Account(String firstName, String lastName, String password, String username) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.username = username;
     }
 
     public Account(int accountId, String employeeRole, String firstName, String lastName, String password, String username) {
@@ -37,6 +49,20 @@ public class Account {
         this.lastName = lastName;
         this.password = password;
         this.username = username;
+    }
+
+    public boolean isPasswordValid() {
+        if (password == null) {
+            return false;
+        }
+        return password.length() >= MIN_PASSWORD_LENGTH && password.length() <= MAX_PASSWORD_LENGTH;
+    }
+
+    public boolean isUsernameValid() {
+        if (username == null) {
+            return false;
+        }
+        return username.length() >= MIN_USERNAME_LENGTH && username.length() <= MAX_USERNAME_LENGTH;
     }
 
     public int getAccountId() {
