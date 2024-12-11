@@ -38,7 +38,7 @@ public class RegisterAccountTests {
     }
 
     @Test
-    public void createAccountTest() throws IOException, InterruptedException, JSONException {
+    public void createValidAccountTest() throws IOException, InterruptedException, JSONException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("firstName", "Lawrence");
         jsonObject.put("lastName", "Yim");
