@@ -3,7 +3,9 @@ package com.revature.ticket_reimbursement;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ticket_reimbursement.entity.Ticket;
+import com.revature.ticket_reimbursement.enums.ReimbursementType;
 import com.revature.ticket_reimbursement.enums.TicketStatus;
+import com.revature.ticket_reimbursement.utils.StatusCodeTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,19 +49,20 @@ public class GetTicketTests {
                 .build();
         HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
-        Assertions.assertEquals(200, status, "Expected Status Code 200 - Actual Code was: " + status);
-        List<Ticket> expectedResult = new ArrayList<Ticket>();
+        StatusCodeTest.assertEquals(200, status);
 
+        List<Ticket> expectedResult = new ArrayList<Ticket>();
         expectedResult.add(new Ticket(9997, 9997, "Test example of a pending ticket.",
-                "TRAVEL", TicketStatus.PENDING, new BigDecimal("999.99")));
+                ReimbursementType.TRAVEL, TicketStatus.PENDING, new BigDecimal("999.99")));
         expectedResult.add(new Ticket(9998, 9997, "Test example of a denied ticket.",
-                "TRAVEL", TicketStatus.DENIED, new BigDecimal("999.99")));
+                ReimbursementType.TRAVEL, TicketStatus.DENIED, new BigDecimal("999.99")));
         expectedResult.add(new Ticket(9999, 9997, "Test example of an approved ticket.",
-                "TRAVEL", TicketStatus.APPROVED, new BigDecimal("999.99")));
+                ReimbursementType.TRAVEL, TicketStatus.APPROVED, new BigDecimal("999.99")));
 
         List<Ticket> actualResult = objectMapper.readValue(response.body(), new TypeReference<>() {
         });
-        Assertions.assertEquals(expectedResult, actualResult, "Expected=" + expectedResult + ", Actual=" + actualResult);
+        Assertions.assertEquals(expectedResult, actualResult, "Expected = " + expectedResult +
+                ", Actual = " + actualResult);
     }
 
 }

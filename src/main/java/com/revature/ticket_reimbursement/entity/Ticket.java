@@ -1,5 +1,7 @@
 package com.revature.ticket_reimbursement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.revature.ticket_reimbursement.enums.ReimbursementType;
 import com.revature.ticket_reimbursement.enums.TicketStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,18 +26,27 @@ public class Ticket {
     private Integer madeBy;
     @Column(name = "description")
     private String description;
+    @Enumerated(EnumType.STRING)
     @Column(name = "reimbursement_type")
-    private String reimbursementType;
+    private ReimbursementType reimbursementType;
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private TicketStatus status;
     @Column(name = "reimbursement_amount")
     private BigDecimal reimbursementAmount;
+    private static final int MAX_DESCRIPTION_LENGTH = 1000;
 
     public Ticket() {
     }
 
-    public Ticket(Integer ticketId, Integer madeBy, String description, String reimbursementType,
+    public Ticket(Integer madeBy, String description, ReimbursementType reimbursementType, BigDecimal reimbursementAmount) {
+        this.madeBy = madeBy;
+        this.description = description;
+        this.reimbursementType = reimbursementType;
+        this.reimbursementAmount = reimbursementAmount;
+    }
+
+    public Ticket(Integer ticketId, Integer madeBy, String description, ReimbursementType reimbursementType,
                   TicketStatus status, BigDecimal reimbursementAmount) {
         this.ticketId = ticketId;
         this.madeBy = madeBy;
@@ -43,6 +54,23 @@ public class Ticket {
         this.reimbursementType = reimbursementType;
         this.status = status;
         this.reimbursementAmount = reimbursementAmount;
+    }
+
+    @JsonIgnore
+    public boolean isAmountValid() {
+        if (reimbursementAmount == null) {
+            return false;
+        }
+        // Check if the amount is bigger than 0.
+        return reimbursementAmount.compareTo(new BigDecimal("0")) > 0;
+    }
+
+    @JsonIgnore
+    public boolean isDescriptionValid() {
+        if (description == null) {
+            return false;
+        }
+        return !description.isEmpty() && description.length() <= MAX_DESCRIPTION_LENGTH;
     }
 
     public Integer getTicketId() {
@@ -69,11 +97,11 @@ public class Ticket {
         this.description = description;
     }
 
-    public String getReimbursementType() {
+    public ReimbursementType getReimbursementType() {
         return reimbursementType;
     }
 
-    public void setReimbursementType(String reimbursementType) {
+    public void setReimbursementType(ReimbursementType reimbursementType) {
         this.reimbursementType = reimbursementType;
     }
 

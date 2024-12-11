@@ -14,7 +14,7 @@ CREATE TABLE account (
 CREATE TABLE ticket (
     ticket_id INT PRIMARY KEY AUTO_INCREMENT,
     made_by INT NOT NULL,
-    description VARCHAR(1000),
+    description VARCHAR(1000) NOT NULL,
     reimbursement_type VARCHAR(30) NOT NULL,
     status VARCHAR(30) NOT NULL,
     reimbursement_amount DECIMAL(20, 2) NOT NULL,

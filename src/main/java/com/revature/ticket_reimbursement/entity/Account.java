@@ -1,5 +1,6 @@
 package com.revature.ticket_reimbursement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.revature.ticket_reimbursement.enums.EmployeeRole;
 import jakarta.persistence.*;
 
@@ -14,7 +15,7 @@ public class Account {
     private int accountId;
     @Enumerated(EnumType.STRING)
     @Column(name = "employee_role")
-    private EmployeeRole employeeRole = EmployeeRole.EMPLOYEE;
+    private EmployeeRole employeeRole;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
@@ -49,6 +50,7 @@ public class Account {
         this.username = username;
     }
 
+    @JsonIgnore
     public boolean isPasswordValid() {
         if (password == null) {
             return false;
@@ -56,6 +58,7 @@ public class Account {
         return password.length() >= MIN_PASSWORD_LENGTH && password.length() <= MAX_PASSWORD_LENGTH;
     }
 
+    @JsonIgnore
     public boolean isUsernameValid() {
         if (username == null) {
             return false;

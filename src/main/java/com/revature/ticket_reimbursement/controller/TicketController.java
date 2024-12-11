@@ -2,15 +2,14 @@ package com.revature.ticket_reimbursement.controller;
 
 import com.revature.ticket_reimbursement.enums.TicketStatus;
 import com.revature.ticket_reimbursement.entity.Ticket;
+import com.revature.ticket_reimbursement.exception.BadRequestException;
 import com.revature.ticket_reimbursement.service.EmployeeService;
 import com.revature.ticket_reimbursement.service.FinanceManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +21,16 @@ public class TicketController {
     private EmployeeService employeeService;
     @Autowired
     private FinanceManagerService financeManagerService;
+
+    @PostMapping("/")
+    public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket) {
+        try {
+            Ticket createdTicket = employeeService.createTicket(ticket);
+            return ResponseEntity.status(HttpStatus.OK).body(createdTicket);
+        } catch (BadRequestException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
 
     @GetMapping("/")
     public ResponseEntity<List<Ticket>> getAllTickets() {

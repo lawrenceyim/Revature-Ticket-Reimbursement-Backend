@@ -1,6 +1,7 @@
 package com.revature.ticket_reimbursement.service;
 
 import com.revature.ticket_reimbursement.entity.Account;
+import com.revature.ticket_reimbursement.enums.EmployeeRole;
 import com.revature.ticket_reimbursement.exception.BadRequestException;
 import com.revature.ticket_reimbursement.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ public class AccountService {
             throw new BadRequestException("Account with username already exists.");
        }
 
+       account.setEmployeeRole(EmployeeRole.EMPLOYEE);
        return accountRepository.save(account);
    }
 

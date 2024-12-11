@@ -1,6 +1,7 @@
 package com.revature.ticket_reimbursement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.ticket_reimbursement.utils.StatusCodeTest;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
@@ -51,7 +52,7 @@ public class RegisterAccountTests {
                 .build();
         HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
-        Assertions.assertEquals(200, status, "Expected Status Code 200 - Actual Code was: " + response.statusCode());
+        StatusCodeTest.assertEquals(200, status);
 
         String expectedResponseJson = """
                 {
@@ -60,9 +61,7 @@ public class RegisterAccountTests {
                     "firstName": "Lawrence",
                     "lastName": "Yim",
                     "password": "password",
-                    "username": "username1",
-                    "passwordValid": true,
-                    "usernameValid": true
+                    "username": "username1"
                 }
                 """;
         JSONObject expectedJsonObject = new JSONObject(expectedResponseJson);
