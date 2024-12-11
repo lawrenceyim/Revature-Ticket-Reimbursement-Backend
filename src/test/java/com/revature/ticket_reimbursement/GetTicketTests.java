@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ticket_reimbursement.entity.Ticket;
 import com.revature.ticket_reimbursement.enums.ReimbursementType;
 import com.revature.ticket_reimbursement.enums.TicketStatus;
-import com.revature.ticket_reimbursement.utils.JsonResponseTest;
 import com.revature.ticket_reimbursement.utils.StatusCodeTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;

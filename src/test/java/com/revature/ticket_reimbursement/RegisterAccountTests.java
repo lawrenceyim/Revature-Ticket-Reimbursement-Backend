@@ -1,12 +1,11 @@
 package com.revature.ticket_reimbursement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.ticket_reimbursement.utils.JsonResponseTest;
+import com.revature.ticket_reimbursement.utils.JsonObjectTest;
 import com.revature.ticket_reimbursement.utils.StatusCodeTest;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringApplication;
@@ -67,6 +66,6 @@ public class RegisterAccountTests {
                 """;
         JSONObject expectedJsonObject = new JSONObject(expectedResponseJson);
         JSONObject actualJsonObject = new JSONObject(response.body());
-        JsonResponseTest.assertTrue(expectedJsonObject, actualJsonObject);
+        JsonObjectTest.assertTrue(expectedJsonObject, actualJsonObject);
     }
 }

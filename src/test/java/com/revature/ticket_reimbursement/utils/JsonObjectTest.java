@@ -1,10 +1,9 @@
 package com.revature.ticket_reimbursement.utils;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 
-public class JsonResponseTest {
+public class JsonObjectTest {
     public static void assertTrue(JSONObject expected, JSONObject actual) {
         // .equals() doesn't work correctly when the JSON string is the same.
         // Ignore IDE suggestion to simplify using equal()
