@@ -67,7 +67,7 @@ public class RegisterAccountTests {
                 """;
         JSONObject expectedJsonObject = new JSONObject(expectedResponseJson);
         JSONObject actualJsonObject = new JSONObject(response.body());
-        JsonObjectTest.assertTrue(expectedJsonObject, actualJsonObject);
+        JsonObjectTest.assertEquals(expectedJsonObject, actualJsonObject);
     }
 
     @Test

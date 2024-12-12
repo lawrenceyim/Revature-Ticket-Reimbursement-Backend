@@ -39,7 +39,7 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK).body(accountService.getAllAccounts());
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     private ResponseEntity<Account> login(@RequestBody Account account) {
         try {
             Account accountInDatabase = accountService.getAccountByUsernameAndPassword(account);
