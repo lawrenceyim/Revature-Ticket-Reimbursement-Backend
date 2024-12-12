@@ -16,6 +16,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/tickets")
+@CrossOrigin(origins = "http://localhost:5173/")
 public class TicketController {
     @Autowired
     private EmployeeService employeeService;
