@@ -32,7 +32,11 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    public Account getAccountByUsernameAndPassword(Account account) throws BadRequestException {
+    public List<Account> findAllAccounts() {
+        return accountRepository.findAll();
+    }
+    
+    public Account findAccountByUsernameAndPassword(Account account) throws BadRequestException {
         if (!account.isUsernameValid() || !account.isPasswordValid()) {
             throw new BadRequestException("Invalid login credentials.");
         }
@@ -41,9 +45,5 @@ public class AccountService {
             throw new BadRequestException("Invalid login credentials.");
         }
         return foundAccount.get();
-    }
-
-    public List<Account> getAllAccounts() {
-        return accountRepository.findAll();
     }
 }

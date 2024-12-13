@@ -18,19 +18,15 @@ public class FinanceManagerService {
     private TicketRepository ticketRepository;
     private final Queue<Integer> pendingTicketIdQueue = new ArrayDeque<>();
 
-    public List<Ticket> getAllTickets() {
-        return ticketRepository.findAll();
-    }
-
-    public List<Ticket> getAllTicketsByStatus(TicketStatus status) {
-        return ticketRepository.findAllByTicketStatus(status);
-    }
-
     public void addPendingTicketToQueue(int ticketId) {
         pendingTicketIdQueue.add(ticketId);
     }
 
-    public Ticket getNextPendingTicket() {
+    public List<Ticket> findAllTickets() {
+        return ticketRepository.findAll();
+    }
+
+    public Ticket findNextPendingTicket() {
         // Check if the ticket queue is empty when a user requests a pending ticket
         // The queue cannot be filled at instantiation of the service component because it results in the queue being empty.
         // Possible reason: service is instantiated before the H2 database is instantiated.
@@ -54,10 +50,14 @@ public class FinanceManagerService {
         return null;
     }
 
-    public Ticket getTicketById(int ticketId) {
+    public Ticket findTicketById(int ticketId) {
         return ticketRepository.findById(ticketId).get();
     }
 
+    public List<Ticket> findTicketsByStatus(TicketStatus status) {
+        return ticketRepository.findAllByTicketStatus(status);
+    }
+    
     public Ticket updateTicket(Ticket ticket) throws BadRequestException {
         if (ticket.getTicketId() == null) {
             throw new BadRequestException("Ticket must have an ID.");

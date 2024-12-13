@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/accounts")
@@ -34,13 +33,13 @@ public class AccountController {
 
     @GetMapping("/")
     private ResponseEntity<List<Account>> getAllAccounts() {
-        return ResponseEntity.status(HttpStatus.OK).body(accountService.getAllAccounts());
+        return ResponseEntity.status(HttpStatus.OK).body(accountService.findAllAccounts());
     }
 
     @PostMapping("/login")
     private ResponseEntity<Account> login(@RequestBody Account account) {
         try {
-            Account accountInDatabase = accountService.getAccountByUsernameAndPassword(account);
+            Account accountInDatabase = accountService.findAccountByUsernameAndPassword(account);
             return ResponseEntity.status(HttpStatus.OK).body(accountInDatabase);
         } catch (BadRequestException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

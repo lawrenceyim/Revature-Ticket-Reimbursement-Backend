@@ -49,11 +49,11 @@ public class EmployeeService {
         return createdTicket;
     }
 
-    public List<Ticket> getAllTickets(int accountId) {
+    public List<Ticket> findAllTickets(int accountId) {
         return ticketRepository.findAllByAccountId(accountId);
     }
 
-    public List<Ticket> getAllTicketsByStatus(int accountId, TicketStatus status) {
+    public List<Ticket> findTicketsByStatus(int accountId, TicketStatus status) {
         return ticketRepository.findAllByAccountIdAndTicketStatus(accountId, status);
     }
 }

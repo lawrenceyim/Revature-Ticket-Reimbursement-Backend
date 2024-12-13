@@ -25,7 +25,7 @@ public class TicketController {
 
     @GetMapping("/")
     public ResponseEntity<List<Ticket>> getAllTickets() {
-        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getAllTickets());
+        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.findAllTickets());
     }
 
     @PostMapping("/")
@@ -50,39 +50,39 @@ public class TicketController {
 
     @GetMapping("/accounts/{accountId}")
     public ResponseEntity<List<Ticket>> getTicketsByAccountId(@PathVariable int accountId) {
-        return ResponseEntity.status(HttpStatus.OK).body(employeeService.getAllTickets(accountId));
+        return ResponseEntity.status(HttpStatus.OK).body(employeeService.findAllTickets(accountId));
     }
 
     @GetMapping("/accounts/{accountId}/{status}")
     public ResponseEntity<List<Ticket>> getAllTicketsByAccountIdAndStatus(@PathVariable int accountId,
                                                                           @PathVariable TicketStatus status) {
-        return ResponseEntity.status(HttpStatus.OK).body(employeeService.getAllTicketsByStatus(accountId, status));
+        return ResponseEntity.status(HttpStatus.OK).body(employeeService.findTicketsByStatus(accountId, status));
     }
 
 
     @GetMapping("/approved")
     public ResponseEntity<List<Ticket>> getAllApprovedTickets() {
-        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getAllTicketsByStatus(TicketStatus.APPROVED));
+        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.findTicketsByStatus(TicketStatus.APPROVED));
     }
 
     @GetMapping("/denied")
     public ResponseEntity<List<Ticket>> getAllDeniedTickets() {
-        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getAllTicketsByStatus(TicketStatus.DENIED));
+        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.findTicketsByStatus(TicketStatus.DENIED));
     }
 
     @GetMapping("/next")
     public ResponseEntity<Ticket> getNextPendingTicket() throws JSONException {
-        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getNextPendingTicket());
+        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.findNextPendingTicket());
     }
 
     @GetMapping("/pending")
     public ResponseEntity<List<Ticket>> getAllPendingTickets() {
-        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.getAllTicketsByStatus(TicketStatus.PENDING));
+        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.findTicketsByStatus(TicketStatus.PENDING));
     }
 
     @GetMapping("/{ticketId}")
     public ResponseEntity<Ticket> getTicketById(@PathVariable int ticketId) {
-        Ticket ticket = financeManagerService.getTicketById(ticketId);
+        Ticket ticket = financeManagerService.findTicketById(ticketId);
         return ResponseEntity.status(HttpStatus.OK).body(ticket);
     }
 }
