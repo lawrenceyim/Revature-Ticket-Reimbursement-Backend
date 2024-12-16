@@ -23,7 +23,7 @@ public class TicketController {
     @Autowired
     private FinanceManagerService financeManagerService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<Ticket>> getAllTickets() {
         return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.findAllTickets());
     }

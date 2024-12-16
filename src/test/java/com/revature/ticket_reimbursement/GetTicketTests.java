@@ -45,7 +45,7 @@ public class GetTicketTests {
     @Test
     public void GetAllTicketTest() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/tickets/"))
+                .uri(URI.create("http://localhost:8080/tickets"))
                 .build();
         HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
