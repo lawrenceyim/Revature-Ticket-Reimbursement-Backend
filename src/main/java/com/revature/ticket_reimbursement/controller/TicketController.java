@@ -69,29 +69,20 @@ public class TicketController {
                 .findTicketsByAccountIdAndStatus(accountId, TicketStatus.valueOf(status.toUpperCase())));
     }
 
-    @GetMapping("/approved")
-    public ResponseEntity<List<Ticket>> getApprovedTickets() {
-        return ResponseEntity.status(HttpStatus.OK).body(ticketService.findTicketsByStatus(TicketStatus.APPROVED));
-    }
-
-    @GetMapping("/denied")
-    public ResponseEntity<List<Ticket>> getDeniedTickets() {
-        return ResponseEntity.status(HttpStatus.OK).body(ticketService.findTicketsByStatus(TicketStatus.DENIED));
-    }
-
-    @GetMapping("/pending")
-    public ResponseEntity<List<Ticket>> getPendingTickets() {
-        return ResponseEntity.status(HttpStatus.OK).body(ticketService.findTicketsByStatus(TicketStatus.PENDING));
-    }
-
     @GetMapping("/next")
-    public ResponseEntity<Ticket> getNextPendingTicket() throws JSONException {
+    public ResponseEntity<Ticket> getNextPendingTicket() {
         return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.findNextPendingTicket());
     }
 
-    @GetMapping("/{ticketId}")
+    @GetMapping("/id/{ticketId}")
     public ResponseEntity<Ticket> getTicketById(@PathVariable int ticketId) {
         Ticket ticket = ticketService.findTicketById(ticketId);
         return ResponseEntity.status(HttpStatus.OK).body(ticket);
+    }
+
+    @GetMapping("/{status}")
+    public ResponseEntity<List<Ticket>> getTicketByStatus(@PathVariable String status) {
+        TicketStatus ticketStatus = TicketStatus.valueOf(status.toUpperCase());
+        return ResponseEntity.status(HttpStatus.OK).body(ticketService.findTicketsByStatus(ticketStatus));
     }
 }
