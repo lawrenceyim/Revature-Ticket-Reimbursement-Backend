@@ -1,11 +1,13 @@
 package com.revature.ticket_reimbursement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.ticket_reimbursement.utils.JsonObjectTest;
+import com.revature.ticket_reimbursement.entity.Account;
+import com.revature.ticket_reimbursement.enums.EmployeeRole;
 import com.revature.ticket_reimbursement.utils.StatusCodeTest;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringApplication;
@@ -55,19 +57,11 @@ public class RegisterAccountTests {
         int status = response.statusCode();
         StatusCodeTest.assertEquals(200, status);
 
-        String expectedResponseJson = """
-                {
-                    "accountId": 1,
-                    "employeeRole": "EMPLOYEE",
-                    "firstName": "Lawrence",
-                    "lastName": "Yim",
-                    "password": "password",
-                    "username": "username1"
-                }
-                """;
-        JSONObject expectedJsonObject = new JSONObject(expectedResponseJson);
-        JSONObject actualJsonObject = new JSONObject(response.body());
-        JsonObjectTest.assertEquals(expectedJsonObject, actualJsonObject);
+        Account expectedAccount = new Account(1, EmployeeRole.EMPLOYEE, "Lawrence", "Yim",
+                "password", "username");
+        Account actualAccount = objectMapper.readValue(response.body(), Account.class);
+        Assertions.assertEquals(expectedAccount, actualAccount,
+                "Expected: " + expectedAccount + ". Actual: " + actualAccount);
     }
 
     @Test

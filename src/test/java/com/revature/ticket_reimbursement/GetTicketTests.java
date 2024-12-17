@@ -7,7 +7,6 @@ import com.revature.ticket_reimbursement.enums.ReimbursementType;
 import com.revature.ticket_reimbursement.enums.TicketStatus;
 import com.revature.ticket_reimbursement.utils.StatusCodeTest;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +22,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,8 +85,9 @@ public class GetTicketTests {
         StatusCodeTest.assertEquals(200, statusCode);
 
         List<Ticket> expectedTicketArray = List.of(new Ticket(ticketId, madeBy, description, type, status, amount));
-        List<Ticket> actualTicketArray = objectMapper.readValue(response.body(), new TypeReference<>() {});
-        Assertions.assertEquals(expectedTicketArray, actualTicketArray, "Expected: " + expectedTicketArray + ". Actual: " + actualTicketArray);
+        List<Ticket> actualTicketArray = objectMapper.readValue(response.body(), new TypeReference<>() {
+        });
+        Assertions.assertEquals(expectedTicketArray, actualTicketArray,
+                "Expected: " + expectedTicketArray + ". Actual: " + actualTicketArray);
     }
-
 }

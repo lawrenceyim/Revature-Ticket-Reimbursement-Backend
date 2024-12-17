@@ -1,11 +1,13 @@
 package com.revature.ticket_reimbursement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.ticket_reimbursement.utils.JsonObjectTest;
+import com.revature.ticket_reimbursement.entity.Ticket;
+import com.revature.ticket_reimbursement.enums.ReimbursementType;
+import com.revature.ticket_reimbursement.enums.TicketStatus;
 import com.revature.ticket_reimbursement.utils.StatusCodeTest;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -40,47 +43,31 @@ public class CreateTicketTests {
 
     @Test
     public void createValidTicketTest() throws IOException, InterruptedException, JSONException {
-        String createTicketJson = """
-                {
-                    "madeBy": 9998,
-                    "description": "Hotel.",
-                    "reimbursementType": "LODGING",
-                    "reimbursementAmount": "100"
-                }""";
+        Ticket ticketToCreate = new Ticket(null, 9998, "Hotel.", ReimbursementType.LODGING,
+                null, new BigDecimal("100"));
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/tickets/"))
-                .POST(HttpRequest.BodyPublishers.ofString(createTicketJson))
+                .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(ticketToCreate)))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
         StatusCodeTest.assertEquals(200, status);
-        String expectedResponseJson = """
-                {
-                    "ticketId": 1,
-                    "madeBy": 9998,
-                    "description": "Hotel.",
-                    "reimbursementType": "LODGING",
-                    "status": "PENDING",
-                    "reimbursementAmount": 100
-                }""";
-        JSONObject expectedJsonObject = new JSONObject(expectedResponseJson);
-        JSONObject actualJsonObject = new JSONObject(response.body());
-        JsonObjectTest.assertEquals(expectedJsonObject, actualJsonObject);
+
+        Ticket expectedTicket = new Ticket(1, 9998, "Hotel.", ReimbursementType.LODGING,
+                TicketStatus.PENDING, new BigDecimal("100"));
+        Ticket actualTicket = objectMapper.readValue(response.body(), Ticket.class);
+        Assertions.assertEquals(expectedTicket, actualTicket,
+                "Expected: " + expectedTicket + ". Actual: " + actualTicket);
     }
 
     @Test
     public void createTicketWithInvalidAmountTest() throws IOException, InterruptedException {
-        String createTicketJson = """
-                {
-                    "madeBy": 9998,
-                    "description": "Hotel.",
-                    "reimbursementType": "LODGING",
-                    "reimbursementAmount": "0"
-                }""";
+        Ticket ticketToCreate = new Ticket(null, 9998, "Hotel.", ReimbursementType.LODGING,
+                null, new BigDecimal("0"));
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/tickets/"))
-                .POST(HttpRequest.BodyPublishers.ofString(createTicketJson))
+                .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(ticketToCreate)))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -90,16 +77,11 @@ public class CreateTicketTests {
 
     @Test
     public void createTicketWithInvalidTypeTest() throws IOException, InterruptedException {
-        String createTicketJson = """
-                {
-                    "madeBy": 9998,
-                    "description": "Hotel.",
-                    "reimbursementType": "LODGIN",
-                    "reimbursementAmount": "100"
-                }""";
+        Ticket ticketToCreate = new Ticket(null, 9998, "Hotel.", null,
+                null, new BigDecimal("0"));
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/tickets/"))
-                .POST(HttpRequest.BodyPublishers.ofString(createTicketJson))
+                .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(ticketToCreate)))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -109,16 +91,11 @@ public class CreateTicketTests {
 
     @Test
     public void createTicketWithInvalidDescriptionTest() throws IOException, InterruptedException {
-        String createTicketJson = """
-                {
-                    "madeBy": 9998,
-                    "description": "",
-                    "reimbursementType": "LODGING",
-                    "reimbursementAmount": "100"
-                }""";
+        Ticket ticketToCreate = new Ticket(null, 9998, "", ReimbursementType.LODGING,
+                null, new BigDecimal("0"));
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/tickets/"))
-                .POST(HttpRequest.BodyPublishers.ofString(createTicketJson))
+                .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(ticketToCreate)))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
