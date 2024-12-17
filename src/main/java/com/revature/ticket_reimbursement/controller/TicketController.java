@@ -6,14 +6,19 @@ import com.revature.ticket_reimbursement.exception.BadRequestException;
 import com.revature.ticket_reimbursement.service.EmployeeService;
 import com.revature.ticket_reimbursement.service.FinanceManagerService;
 import com.revature.ticket_reimbursement.service.TicketService;
-import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -66,11 +71,6 @@ public class TicketController {
                                                                           @PathVariable String status) {
         return ResponseEntity.status(HttpStatus.OK).body(ticketService
                 .findTicketsByAccountIdAndStatus(accountId, TicketStatus.valueOf(status.toUpperCase())));
-    }
-
-    @GetMapping("/next")
-    public ResponseEntity<Ticket> getNextPendingTicket() {
-        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.findNextPendingTicket());
     }
 
     @GetMapping("/id/{ticketId}")

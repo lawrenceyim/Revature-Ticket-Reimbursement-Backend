@@ -43,8 +43,6 @@ public class EmployeeService {
         }
 
         ticket.setStatus(TicketStatus.PENDING);
-        Ticket createdTicket = ticketRepository.save(ticket);
-        financeManagerService.addPendingTicketToQueue(createdTicket.getTicketId());
-        return createdTicket;
+        return ticketRepository.save(ticket);
     }
 }
