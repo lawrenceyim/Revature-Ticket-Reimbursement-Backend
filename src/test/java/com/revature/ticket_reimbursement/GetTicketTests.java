@@ -74,6 +74,28 @@ public class GetTicketTests {
             "9998,9997,Test example of a denied ticket.,TRAVEL,DENIED,999.99",
             "9999,9997,Test example of an approved ticket.,TRAVEL,APPROVED,999.99"
     })
+    public void getTicketByIdTest(int ticketId, int madeBy, String description, ReimbursementType type,
+                                  TicketStatus status, BigDecimal amount) throws IOException, InterruptedException, JSONException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/tickets/id/" + ticketId))
+                .build();
+
+        HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        StatusCodeTest.assertEquals(200, statusCode);
+
+        Ticket expectedTicket = new Ticket(ticketId, madeBy, description, type, status, amount);
+        Ticket actualTicket = objectMapper.readValue(response.body(), Ticket.class);
+        Assertions.assertEquals(expectedTicket, actualTicket,
+                "Expected: " + expectedTicket + ". Actual: " + actualTicket);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "9997,9997,Test example of a pending ticket.,TRAVEL,PENDING,999.99",
+            "9998,9997,Test example of a denied ticket.,TRAVEL,DENIED,999.99",
+            "9999,9997,Test example of an approved ticket.,TRAVEL,APPROVED,999.99"
+    })
     public void getTicketByStatusTest(int ticketId, int madeBy, String description, ReimbursementType type,
                                       TicketStatus status, BigDecimal amount) throws IOException, InterruptedException, JSONException {
         HttpRequest request = HttpRequest.newBuilder()
