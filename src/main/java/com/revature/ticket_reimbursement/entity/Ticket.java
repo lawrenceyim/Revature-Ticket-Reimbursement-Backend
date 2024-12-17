@@ -1,6 +1,8 @@
 package com.revature.ticket_reimbursement.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ticket_reimbursement.enums.ReimbursementType;
 import com.revature.ticket_reimbursement.enums.TicketStatus;
 import jakarta.persistence.Column;
@@ -11,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -73,6 +76,11 @@ public class Ticket {
         return !description.isEmpty() && description.length() <= MAX_DESCRIPTION_LENGTH;
     }
 
+    @JsonIgnore
+    public boolean amountMatches(BigDecimal amount) {
+        return reimbursementAmount.compareTo(amount) == 0;
+    }
+
     public Integer getTicketId() {
         return ticketId;
     }
@@ -129,7 +137,7 @@ public class Ticket {
         return ticketId.equals(ticket.ticketId) &&
                 madeBy.equals(ticket.madeBy) &&
                 description.equals(ticket.description) &&
-                reimbursementType.equals(ticket.reimbursementType) &&
+                this.amountMatches(ticket.getReimbursementAmount()) &&
                 status.equals(ticket.status) &&
                 reimbursementAmount.equals(ticket.reimbursementAmount);
     }
@@ -137,5 +145,16 @@ public class Ticket {
     @Override
     public int hashCode() {
         return Objects.hash(ticketId, madeBy, description, reimbursementType, status, reimbursementAmount);
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+
+        }
+        return "";
     }
 }

@@ -4,6 +4,8 @@ import com.revature.ticket_reimbursement.enums.TicketStatus;
 import com.revature.ticket_reimbursement.entity.Ticket;
 import com.revature.ticket_reimbursement.exception.BadRequestException;
 import com.revature.ticket_reimbursement.repository.TicketRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ public class FinanceManagerService {
     @Autowired
     private TicketRepository ticketRepository;
     private final Queue<Integer> pendingTicketIdQueue = new ArrayDeque<>();
+    private static Logger logger = LoggerFactory.getLogger(FinanceManagerService.class);
 
     public void addPendingTicketToQueue(int ticketId) {
         pendingTicketIdQueue.add(ticketId);
@@ -57,8 +60,10 @@ public class FinanceManagerService {
     public List<Ticket> findTicketsByStatus(TicketStatus status) {
         return ticketRepository.findAllByTicketStatus(status);
     }
-    
+
     public Ticket updateTicket(Ticket ticket) throws BadRequestException {
+        logger.info("updateTicket called. Ticket: " + ticket.toString());
+
         if (ticket.getTicketId() == null) {
             throw new BadRequestException("Ticket must have an ID.");
         }
@@ -79,7 +84,7 @@ public class FinanceManagerService {
 
         if (!ticket.getDescription().equals(ticketToUpdate.getDescription()) ||
                 !ticket.getMadeBy().equals(ticketToUpdate.getMadeBy()) ||
-                !ticket.getReimbursementAmount().equals(ticketToUpdate.getReimbursementAmount()) ||
+                !ticket.amountMatches(ticketToUpdate.getReimbursementAmount()) ||
                 !ticket.getReimbursementType().equals(ticketToUpdate.getReimbursementType())) {
             throw new BadRequestException("Cannot change ticket details besides its status.");
         }

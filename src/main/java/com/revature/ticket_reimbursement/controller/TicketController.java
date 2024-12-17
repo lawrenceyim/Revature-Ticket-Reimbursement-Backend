@@ -6,6 +6,8 @@ import com.revature.ticket_reimbursement.exception.BadRequestException;
 import com.revature.ticket_reimbursement.service.EmployeeService;
 import com.revature.ticket_reimbursement.service.FinanceManagerService;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ public class TicketController {
     private EmployeeService employeeService;
     @Autowired
     private FinanceManagerService financeManagerService;
+    private static Logger logger = LoggerFactory.getLogger(TicketController.class);
 
     @GetMapping("")
     public ResponseEntity<List<Ticket>> getAllTickets() {
@@ -42,8 +45,10 @@ public class TicketController {
     public ResponseEntity<Ticket> updateTicket(@RequestBody Ticket ticket) {
         try {
             Ticket updatedTicket = financeManagerService.updateTicket(ticket);
+            logger.info("Updated Ticket: " + ticket.toString());
             return ResponseEntity.status(HttpStatus.OK).body(updatedTicket);
         } catch (BadRequestException e) {
+            logger.info("Bad request: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
