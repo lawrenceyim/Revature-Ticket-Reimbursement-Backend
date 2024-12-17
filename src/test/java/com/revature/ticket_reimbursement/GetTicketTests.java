@@ -6,10 +6,14 @@ import com.revature.ticket_reimbursement.entity.Ticket;
 import com.revature.ticket_reimbursement.enums.ReimbursementType;
 import com.revature.ticket_reimbursement.enums.TicketStatus;
 import com.revature.ticket_reimbursement.utils.StatusCodeTest;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 
@@ -19,6 +23,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,8 +64,31 @@ public class GetTicketTests {
         expectedResult.add(new Ticket(9999, 9997, "Test example of an approved ticket.",
                 ReimbursementType.TRAVEL, TicketStatus.APPROVED, new BigDecimal("999.99")));
 
-        List<Ticket> actualResult = objectMapper.readValue(response.body(), new TypeReference<>() {});
+        List<Ticket> actualResult = objectMapper.readValue(response.body(), new TypeReference<>() {
+        });
         Assertions.assertEquals(expectedResult, actualResult, "Expected = " + expectedResult +
                 ", Actual = " + actualResult);
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "9997,9997,Test example of a pending ticket.,TRAVEL,PENDING,999.99",
+            "9998,9997,Test example of a denied ticket.,TRAVEL,DENIED,999.99",
+            "9999,9997,Test example of an approved ticket.,TRAVEL,APPROVED,999.99"
+    })
+    public void getTicketByStatusTest(int ticketId, int madeBy, String description, ReimbursementType type,
+                                      TicketStatus status, BigDecimal amount) throws IOException, InterruptedException, JSONException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/tickets/" + status))
+                .build();
+
+        HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        StatusCodeTest.assertEquals(200, statusCode);
+
+        List<Ticket> expectedTicketArray = List.of(new Ticket(ticketId, madeBy, description, type, status, amount));
+        List<Ticket> actualTicketArray = objectMapper.readValue(response.body(), new TypeReference<>() {});
+        Assertions.assertEquals(expectedTicketArray, actualTicketArray, "Expected: " + expectedTicketArray + ". Actual: " + actualTicketArray);
+    }
+
 }
