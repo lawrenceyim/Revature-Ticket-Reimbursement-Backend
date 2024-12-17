@@ -19,7 +19,7 @@ public class FinanceManagerService {
     @Autowired
     private TicketRepository ticketRepository;
     private final Queue<Integer> pendingTicketIdQueue = new ArrayDeque<>();
-    private static Logger logger = LoggerFactory.getLogger(FinanceManagerService.class);
+    private static final Logger logger = LoggerFactory.getLogger(FinanceManagerService.class);
 
     public void addPendingTicketToQueue(int ticketId) {
         pendingTicketIdQueue.add(ticketId);

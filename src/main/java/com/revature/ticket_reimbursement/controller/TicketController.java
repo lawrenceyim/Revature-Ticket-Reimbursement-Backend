@@ -24,7 +24,7 @@ public class TicketController {
     private EmployeeService employeeService;
     @Autowired
     private FinanceManagerService financeManagerService;
-    private static Logger logger = LoggerFactory.getLogger(TicketController.class);
+    private static final Logger logger = LoggerFactory.getLogger(TicketController.class);
 
     @GetMapping("")
     public ResponseEntity<List<Ticket>> getAllTickets() {
@@ -43,9 +43,11 @@ public class TicketController {
 
     @PatchMapping("/")
     public ResponseEntity<Ticket> updateTicket(@RequestBody Ticket ticket) {
+        logger.trace("THIS IS A TRACE");
+        logger.debug("THIS IS A DEBUG");
+        logger.info("THIS IS A INFO");
         try {
             Ticket updatedTicket = financeManagerService.updateTicket(ticket);
-            logger.info("Updated Ticket: " + ticket.toString());
             return ResponseEntity.status(HttpStatus.OK).body(updatedTicket);
         } catch (BadRequestException e) {
             logger.info("Bad request: " + e.getMessage());
