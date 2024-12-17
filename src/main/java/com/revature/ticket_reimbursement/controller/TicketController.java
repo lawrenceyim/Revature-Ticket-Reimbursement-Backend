@@ -5,6 +5,7 @@ import com.revature.ticket_reimbursement.enums.TicketStatus;
 import com.revature.ticket_reimbursement.exception.BadRequestException;
 import com.revature.ticket_reimbursement.service.EmployeeService;
 import com.revature.ticket_reimbursement.service.FinanceManagerService;
+import com.revature.ticket_reimbursement.service.TicketService;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +25,13 @@ public class TicketController {
     private EmployeeService employeeService;
     @Autowired
     private FinanceManagerService financeManagerService;
+    @Autowired
+    private TicketService ticketService;
     private static final Logger logger = LoggerFactory.getLogger(TicketController.class);
 
     @GetMapping("")
     public ResponseEntity<List<Ticket>> getAllTickets() {
-        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.findAllTickets());
+        return ResponseEntity.status(HttpStatus.OK).body(ticketService.findTickets());
     }
 
     @PostMapping("/")
@@ -44,6 +47,7 @@ public class TicketController {
 
     @PatchMapping("/")
     public ResponseEntity<Ticket> updateTicket(@RequestBody Ticket ticket) {
+        logger.info("DOESI T STILL WORK?");
         try {
             Ticket updatedTicket = financeManagerService.updateTicket(ticket);
             return ResponseEntity.status(HttpStatus.OK).body(updatedTicket);
@@ -55,25 +59,29 @@ public class TicketController {
 
     @GetMapping("/accounts/{accountId}")
     public ResponseEntity<List<Ticket>> getTicketsByAccountId(@PathVariable int accountId) {
-        return ResponseEntity.status(HttpStatus.OK).body(employeeService.findAllTickets(accountId));
+        return ResponseEntity.status(HttpStatus.OK).body(ticketService.findTicketsByAccountId(accountId));
     }
 
     @GetMapping("/accounts/{accountId}/{status}")
     public ResponseEntity<List<Ticket>> getAllTicketsByAccountIdAndStatus(@PathVariable int accountId,
                                                                           @PathVariable String status) {
-        return ResponseEntity.status(HttpStatus.OK).body(employeeService
-                .findTicketsByStatus(accountId, TicketStatus.valueOf(status.toUpperCase())));
+        return ResponseEntity.status(HttpStatus.OK).body(ticketService
+                .findTicketsByAccountIdAndStatus(accountId, TicketStatus.valueOf(status.toUpperCase())));
     }
 
-
     @GetMapping("/approved")
-    public ResponseEntity<List<Ticket>> getAllApprovedTickets() {
-        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.findTicketsByStatus(TicketStatus.APPROVED));
+    public ResponseEntity<List<Ticket>> getApprovedTickets() {
+        return ResponseEntity.status(HttpStatus.OK).body(ticketService.findTicketsByStatus(TicketStatus.APPROVED));
     }
 
     @GetMapping("/denied")
-    public ResponseEntity<List<Ticket>> getAllDeniedTickets() {
-        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.findTicketsByStatus(TicketStatus.DENIED));
+    public ResponseEntity<List<Ticket>> getDeniedTickets() {
+        return ResponseEntity.status(HttpStatus.OK).body(ticketService.findTicketsByStatus(TicketStatus.DENIED));
+    }
+
+    @GetMapping("/pending")
+    public ResponseEntity<List<Ticket>> getPendingTickets() {
+        return ResponseEntity.status(HttpStatus.OK).body(ticketService.findTicketsByStatus(TicketStatus.PENDING));
     }
 
     @GetMapping("/next")
@@ -81,14 +89,9 @@ public class TicketController {
         return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.findNextPendingTicket());
     }
 
-    @GetMapping("/pending")
-    public ResponseEntity<List<Ticket>> getAllPendingTickets() {
-        return ResponseEntity.status(HttpStatus.OK).body(financeManagerService.findTicketsByStatus(TicketStatus.PENDING));
-    }
-
     @GetMapping("/{ticketId}")
     public ResponseEntity<Ticket> getTicketById(@PathVariable int ticketId) {
-        Ticket ticket = financeManagerService.findTicketById(ticketId);
+        Ticket ticket = ticketService.findTicketById(ticketId);
         return ResponseEntity.status(HttpStatus.OK).body(ticket);
     }
 }

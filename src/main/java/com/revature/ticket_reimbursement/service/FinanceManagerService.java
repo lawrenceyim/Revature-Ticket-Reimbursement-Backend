@@ -4,8 +4,6 @@ import com.revature.ticket_reimbursement.enums.TicketStatus;
 import com.revature.ticket_reimbursement.entity.Ticket;
 import com.revature.ticket_reimbursement.exception.BadRequestException;
 import com.revature.ticket_reimbursement.repository.TicketRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +20,6 @@ public class FinanceManagerService {
 
     public void addPendingTicketToQueue(int ticketId) {
         pendingTicketIdQueue.add(ticketId);
-    }
-
-    public List<Ticket> findAllTickets() {
-        return ticketRepository.findAll();
     }
 
     public Ticket findNextPendingTicket() {
@@ -50,14 +44,6 @@ public class FinanceManagerService {
             return ticket;
         }
         return null;
-    }
-
-    public Ticket findTicketById(int ticketId) {
-        return ticketRepository.findById(ticketId).get();
-    }
-
-    public List<Ticket> findTicketsByStatus(TicketStatus status) {
-        return ticketRepository.findAllByTicketStatus(status);
     }
 
     public Ticket updateTicket(Ticket ticket) throws BadRequestException {

@@ -9,7 +9,6 @@ import com.revature.ticket_reimbursement.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,13 +46,5 @@ public class EmployeeService {
         Ticket createdTicket = ticketRepository.save(ticket);
         financeManagerService.addPendingTicketToQueue(createdTicket.getTicketId());
         return createdTicket;
-    }
-
-    public List<Ticket> findAllTickets(int accountId) {
-        return ticketRepository.findAllByAccountId(accountId);
-    }
-
-    public List<Ticket> findTicketsByStatus(int accountId, TicketStatus status) {
-        return ticketRepository.findAllByAccountIdAndTicketStatus(accountId, status);
     }
 }
