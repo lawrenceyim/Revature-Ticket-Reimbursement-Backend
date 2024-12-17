@@ -47,7 +47,6 @@ public class TicketController {
 
     @PatchMapping("/")
     public ResponseEntity<Ticket> updateTicket(@RequestBody Ticket ticket) {
-        logger.info("DOESI T STILL WORK?");
         try {
             Ticket updatedTicket = financeManagerService.updateTicket(ticket);
             return ResponseEntity.status(HttpStatus.OK).body(updatedTicket);
