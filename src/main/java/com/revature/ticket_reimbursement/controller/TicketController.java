@@ -55,8 +55,9 @@ public class TicketController {
 
     @GetMapping("/accounts/{accountId}/{status}")
     public ResponseEntity<List<Ticket>> getAllTicketsByAccountIdAndStatus(@PathVariable int accountId,
-                                                                          @PathVariable TicketStatus status) {
-        return ResponseEntity.status(HttpStatus.OK).body(employeeService.findTicketsByStatus(accountId, status));
+                                                                          @PathVariable String status) {
+        return ResponseEntity.status(HttpStatus.OK).body(employeeService
+                .findTicketsByStatus(accountId, TicketStatus.valueOf(status.toUpperCase())));
     }
 
 
