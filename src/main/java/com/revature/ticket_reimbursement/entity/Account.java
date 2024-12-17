@@ -1,6 +1,8 @@
 package com.revature.ticket_reimbursement.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ticket_reimbursement.enums.EmployeeRole;
 import jakarta.persistence.*;
 
@@ -148,5 +150,15 @@ public class Account {
     @Override
     public int hashCode() {
         return Objects.hash(accountId, employeeRole, firstName, lastName, password, username);
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(this);
+        } catch (JsonProcessingException ignored) {
+            return "Unable to convert account data to JSON.";
+        }
     }
 }

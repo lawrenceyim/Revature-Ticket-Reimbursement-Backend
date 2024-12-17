@@ -58,10 +58,10 @@ public class RegisterAccountTests {
         StatusCodeTest.assertEquals(200, status);
 
         Account expectedAccount = new Account(1, EmployeeRole.EMPLOYEE, "Lawrence", "Yim",
-                "password", "username");
+                "password", "username1");
         Account actualAccount = objectMapper.readValue(response.body(), Account.class);
         Assertions.assertEquals(expectedAccount, actualAccount,
-                "Expected: " + expectedAccount + ". Actual: " + actualAccount);
+                "Expected: " + expectedAccount.toString() + ". Actual: " + actualAccount.toString());
     }
 
     @Test
