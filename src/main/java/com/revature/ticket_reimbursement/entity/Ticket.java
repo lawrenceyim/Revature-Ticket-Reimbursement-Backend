@@ -13,7 +13,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -152,9 +151,8 @@ public class Ticket {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-
+        } catch (JsonProcessingException ignored) {
+            return "Unable to convert ticket data to JSON.";
         }
-        return "";
     }
 }

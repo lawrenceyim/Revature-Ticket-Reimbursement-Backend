@@ -19,7 +19,6 @@ public class FinanceManagerService {
     @Autowired
     private TicketRepository ticketRepository;
     private final Queue<Integer> pendingTicketIdQueue = new ArrayDeque<>();
-    private static final Logger logger = LoggerFactory.getLogger(FinanceManagerService.class);
 
     public void addPendingTicketToQueue(int ticketId) {
         pendingTicketIdQueue.add(ticketId);
@@ -62,8 +61,6 @@ public class FinanceManagerService {
     }
 
     public Ticket updateTicket(Ticket ticket) throws BadRequestException {
-        logger.info("updateTicket called. Ticket: " + ticket.toString());
-
         if (ticket.getTicketId() == null) {
             throw new BadRequestException("Ticket must have an ID.");
         }

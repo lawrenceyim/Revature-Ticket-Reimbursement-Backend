@@ -37,15 +37,13 @@ public class TicketController {
             Ticket createdTicket = employeeService.createTicket(ticket);
             return ResponseEntity.status(HttpStatus.OK).body(createdTicket);
         } catch (BadRequestException e) {
+            logger.info("Bad request: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
     @PatchMapping("/")
     public ResponseEntity<Ticket> updateTicket(@RequestBody Ticket ticket) {
-        logger.trace("THIS IS A TRACE");
-        logger.debug("THIS IS A DEBUG");
-        logger.info("THIS IS A INFO");
         try {
             Ticket updatedTicket = financeManagerService.updateTicket(ticket);
             return ResponseEntity.status(HttpStatus.OK).body(updatedTicket);
