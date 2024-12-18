@@ -40,10 +40,20 @@ public class AccountService {
         if (!account.isUsernameValid() || !account.isPasswordValid()) {
             throw new BadRequestException("Invalid login credentials.");
         }
+
         Optional<Account> foundAccount = accountRepository.findByUsernameAndPassword(account.getUsername(), account.getPassword());
         if (foundAccount.isEmpty()) {
             throw new BadRequestException("Invalid login credentials.");
         }
+
         return foundAccount.get();
+    }
+
+    public Account updateAccount(Account account) throws BadRequestException {
+        if (accountRepository.findById(account.getAccountId()).isEmpty()) {
+            throw new BadRequestException("Account with given ID does not exist.");
+        }
+
+        return accountRepository.save(account);
     }
 }
