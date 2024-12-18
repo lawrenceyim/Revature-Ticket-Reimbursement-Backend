@@ -24,8 +24,6 @@ public class AccountController {
     private EmployeeService employeeService;
     private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
-
-
     @GetMapping("")
     private ResponseEntity<List<Account>> getAllAccounts() {
         return ResponseEntity.status(HttpStatus.OK).body(accountService.findAllAccounts());
