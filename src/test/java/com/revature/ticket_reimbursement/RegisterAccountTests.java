@@ -57,7 +57,7 @@ public class RegisterAccountTests {
         int status = response.statusCode();
         StatusCodeTest.assertEquals(200, status);
 
-        Account expectedAccount = new Account(1, EmployeeRole.EMPLOYEE, "Lawrence", "Yim",
+        Account expectedAccount = new Account(4, EmployeeRole.EMPLOYEE, "Lawrence", "Yim",
                 "password", "username1");
         Account actualAccount = objectMapper.readValue(response.body(), Account.class);
         Assertions.assertEquals(expectedAccount, actualAccount,
@@ -88,7 +88,7 @@ public class RegisterAccountTests {
         jsonObject.put("firstName", "Lawrence");
         jsonObject.put("lastName", "Yim");
         jsonObject.put("password", "password");
-        jsonObject.put("username", "employee_9997");
+        jsonObject.put("username", "employee");
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/accounts/register"))

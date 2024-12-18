@@ -50,12 +50,12 @@ public class GetAccountTests {
         StatusCodeTest.assertEquals(200, status);
 
         List<Account> expectedResult = List.of(
-                new Account(9997, EmployeeRole.EMPLOYEE, "FirstName9997",
-                        "LastName9997", "password", "employee_9997"),
-                new Account(9998, EmployeeRole.FINANCE_MANAGER, "FirstName9998",
-                        "LastName9998", "password", "finance_manager_9998"),
-                new Account(9999, EmployeeRole.USER_STORY_MANAGER, "FirstName9999",
-                        "LastName9999", "password", "admin_9999")
+                new Account(1, EmployeeRole.USER_STORY_MANAGER, "FirstName1",
+                        "LastName1", "password", "user_story_manager"),
+                new Account(2, EmployeeRole.FINANCE_MANAGER, "FirstName2",
+                        "LastName2", "password", "finance_manager"),
+                new Account(3, EmployeeRole.EMPLOYEE, "FirstName3",
+                        "LastName3", "password", "employee")
         );
         List<Account> actualResult = objectMapper.readValue(response.body(), new TypeReference<>() {
         });

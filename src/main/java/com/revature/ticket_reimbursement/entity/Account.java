@@ -13,7 +13,7 @@ import java.util.Objects;
 public class Account {
     @Column(name = "account_id")
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int accountId;
     @Enumerated(EnumType.STRING)
     @Column(name = "employee_role")

@@ -54,13 +54,14 @@ public class GetTicketTests {
         int status = response.statusCode();
         StatusCodeTest.assertEquals(200, status);
 
-        List<Ticket> expectedResult = new ArrayList<Ticket>();
-        expectedResult.add(new Ticket(9997, 9997, "Test example of a pending ticket.",
-                ReimbursementType.TRAVEL, TicketStatus.PENDING, new BigDecimal("999.99")));
-        expectedResult.add(new Ticket(9998, 9997, "Test example of a denied ticket.",
-                ReimbursementType.TRAVEL, TicketStatus.DENIED, new BigDecimal("999.99")));
-        expectedResult.add(new Ticket(9999, 9997, "Test example of an approved ticket.",
-                ReimbursementType.TRAVEL, TicketStatus.APPROVED, new BigDecimal("999.99")));
+        List<Ticket> expectedResult = List.of(
+                new Ticket(1, 3, "Test example of an approved ticket.",
+                        ReimbursementType.TRAVEL, TicketStatus.APPROVED, new BigDecimal("999.99")),
+                new Ticket(2, 3, "Test example of a denied ticket.",
+                        ReimbursementType.TRAVEL, TicketStatus.DENIED, new BigDecimal("999.99")),
+                new Ticket(3, 3, "Test example of a pending ticket.",
+                        ReimbursementType.TRAVEL, TicketStatus.PENDING, new BigDecimal("999.99"))
+        );
 
         List<Ticket> actualResult = objectMapper.readValue(response.body(), new TypeReference<>() {
         });
@@ -70,9 +71,9 @@ public class GetTicketTests {
 
     @ParameterizedTest
     @CsvSource({
-            "9997,9997,Test example of a pending ticket.,TRAVEL,PENDING,999.99",
-            "9998,9997,Test example of a denied ticket.,TRAVEL,DENIED,999.99",
-            "9999,9997,Test example of an approved ticket.,TRAVEL,APPROVED,999.99"
+            "3,3,Test example of a pending ticket.,TRAVEL,PENDING,999.99",
+            "2,3,Test example of a denied ticket.,TRAVEL,DENIED,999.99",
+            "1,3,Test example of an approved ticket.,TRAVEL,APPROVED,999.99"
     })
     public void getTicketByIdTest(int ticketId, int madeBy, String description, ReimbursementType type,
                                   TicketStatus status, BigDecimal amount) throws IOException, InterruptedException, JSONException {
@@ -92,9 +93,9 @@ public class GetTicketTests {
 
     @ParameterizedTest
     @CsvSource({
-            "9997,9997,Test example of a pending ticket.,TRAVEL,PENDING,999.99",
-            "9998,9997,Test example of a denied ticket.,TRAVEL,DENIED,999.99",
-            "9999,9997,Test example of an approved ticket.,TRAVEL,APPROVED,999.99"
+            "3,3,Test example of a pending ticket.,TRAVEL,PENDING,999.99",
+            "2,3,Test example of a denied ticket.,TRAVEL,DENIED,999.99",
+            "1,3,Test example of an approved ticket.,TRAVEL,APPROVED,999.99"
     })
     public void getTicketByStatusTest(int ticketId, int madeBy, String description, ReimbursementType type,
                                       TicketStatus status, BigDecimal amount) throws IOException, InterruptedException, JSONException {

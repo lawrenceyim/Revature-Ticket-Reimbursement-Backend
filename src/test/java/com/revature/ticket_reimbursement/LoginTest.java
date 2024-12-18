@@ -43,9 +43,9 @@ public class LoginTest {
 
     @ParameterizedTest
     @CsvSource({
-            "9999,USER_STORY_MANAGER,FirstName9999,LastName9999,password,admin_9999",
-            "9998,FINANCE_MANAGER,FirstName9998,LastName9998,password,finance_manager_9998",
-            "9997,EMPLOYEE,FirstName9997,LastName9997,password,employee_9997"})
+            "1,USER_STORY_MANAGER,FirstName1,LastName1,password,user_story_manager",
+            "2,FINANCE_MANAGER,FirstName2,LastName2,password,finance_manager",
+            "3,EMPLOYEE,FirstName3,LastName3,password,employee"})
     public void loginWithValidCredentialTest(int accountId, String employeeRole, String firstName, String lastName,
                                              String password, String username)
             throws JSONException, IOException, InterruptedException {

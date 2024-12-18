@@ -22,7 +22,7 @@ import java.util.Objects;
 public class Ticket {
     @Column(name = "ticket_id")
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ticketId;
     @Column(name = "made_by")
     private Integer madeBy;

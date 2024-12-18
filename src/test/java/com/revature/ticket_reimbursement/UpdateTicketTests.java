@@ -43,7 +43,7 @@ public class UpdateTicketTests {
 
     @Test
     public void updatePendingTicketTest() throws IOException, InterruptedException {
-        Ticket ticketToUpdate = new Ticket(9997, 9997, "Test example of a pending ticket.",
+        Ticket ticketToUpdate = new Ticket(3, 3, "Test example of a pending ticket.",
                 ReimbursementType.TRAVEL, TicketStatus.APPROVED, new BigDecimal("999.99"));
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/tickets/"))
@@ -54,7 +54,7 @@ public class UpdateTicketTests {
         int status = response.statusCode();
         StatusCodeTest.assertEquals(200, status);
 
-        Ticket expectedTicket = new Ticket(9997, 9997, "Test example of a pending ticket.",
+        Ticket expectedTicket = new Ticket(3, 3, "Test example of a pending ticket.",
                 ReimbursementType.TRAVEL, TicketStatus.APPROVED, new BigDecimal("999.99"));
         Ticket actualTicket = objectMapper.readValue(response.body(), Ticket.class);
         Assertions.assertEquals(expectedTicket, actualTicket,

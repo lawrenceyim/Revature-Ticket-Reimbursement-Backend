@@ -43,7 +43,7 @@ public class CreateTicketTests {
 
     @Test
     public void createValidTicketTest() throws IOException, InterruptedException, JSONException {
-        Ticket ticketToCreate = new Ticket(null, 9998, "Hotel.", ReimbursementType.LODGING,
+        Ticket ticketToCreate = new Ticket(null, 2, "Hotel.", ReimbursementType.LODGING,
                 null, new BigDecimal("100"));
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/tickets/"))
@@ -54,7 +54,7 @@ public class CreateTicketTests {
         int status = response.statusCode();
         StatusCodeTest.assertEquals(200, status);
 
-        Ticket expectedTicket = new Ticket(1, 9998, "Hotel.", ReimbursementType.LODGING,
+        Ticket expectedTicket = new Ticket(4, 2, "Hotel.", ReimbursementType.LODGING,
                 TicketStatus.PENDING, new BigDecimal("100"));
         Ticket actualTicket = objectMapper.readValue(response.body(), Ticket.class);
         Assertions.assertEquals(expectedTicket, actualTicket,
@@ -63,7 +63,7 @@ public class CreateTicketTests {
 
     @Test
     public void createTicketWithInvalidAmountTest() throws IOException, InterruptedException {
-        Ticket ticketToCreate = new Ticket(null, 9998, "Hotel.", ReimbursementType.LODGING,
+        Ticket ticketToCreate = new Ticket(null, 2, "Hotel.", ReimbursementType.LODGING,
                 null, new BigDecimal("0"));
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/tickets/"))
@@ -77,7 +77,7 @@ public class CreateTicketTests {
 
     @Test
     public void createTicketWithInvalidTypeTest() throws IOException, InterruptedException {
-        Ticket ticketToCreate = new Ticket(null, 9998, "Hotel.", null,
+        Ticket ticketToCreate = new Ticket(null, 2, "Hotel.", null,
                 null, new BigDecimal("0"));
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/tickets/"))
@@ -91,7 +91,7 @@ public class CreateTicketTests {
 
     @Test
     public void createTicketWithInvalidDescriptionTest() throws IOException, InterruptedException {
-        Ticket ticketToCreate = new Ticket(null, 9998, "", ReimbursementType.LODGING,
+        Ticket ticketToCreate = new Ticket(null, 2, "", ReimbursementType.LODGING,
                 null, new BigDecimal("0"));
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/tickets/"))
