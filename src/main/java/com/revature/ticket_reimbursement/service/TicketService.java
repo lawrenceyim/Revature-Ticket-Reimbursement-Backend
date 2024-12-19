@@ -14,7 +14,7 @@ public class TicketService {
     private TicketRepository ticketRepository;
 
     public Ticket findNextPendingTicket() {
-        return ticketRepository.findNextPendingTicket();
+        return ticketRepository.findNextPendingTicket().get();
     }
 
     public List<Ticket> findTickets() {

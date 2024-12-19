@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Integer> {
@@ -20,6 +21,11 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
     @Query("SELECT t FROM Ticket t WHERE t.madeBy = :madeBy AND t.status = :status")
     List<Ticket> findAllByAccountIdAndTicketStatus(@Param("madeBy") int madeBy, @Param("status") TicketStatus status);
 
-    @Query(value = "SELECT t from Ticket t WHERE t.status = PENDING")
-    Ticket findNextPendingTicket();
+    @Query(value = """
+            SELECT *
+            FROM ticket
+            WHERE ticket.status = 'PENDING'
+            ORDER BY ticket.ticket_id ASC
+            LIMIT 1;""", nativeQuery = true)
+    Optional<Ticket> findNextPendingTicket();
 }
