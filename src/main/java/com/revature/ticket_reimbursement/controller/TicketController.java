@@ -79,6 +79,12 @@ public class TicketController {
         return ResponseEntity.status(HttpStatus.OK).body(ticket);
     }
 
+    @GetMapping("/next")
+    public ResponseEntity<Ticket> getNextPendingTicket() {
+        Ticket ticket = ticketService.findNextPendingTicket();
+        return ResponseEntity.status(HttpStatus.OK).body(ticket);
+    }
+
     @GetMapping("/{status}")
     public ResponseEntity<List<Ticket>> getTicketByStatus(@PathVariable String status) {
         TicketStatus ticketStatus = TicketStatus.valueOf(status.toUpperCase());

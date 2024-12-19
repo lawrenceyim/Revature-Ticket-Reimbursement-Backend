@@ -13,6 +13,10 @@ public class TicketService {
     @Autowired
     private TicketRepository ticketRepository;
 
+    public Ticket findNextPendingTicket() {
+        return ticketRepository.findNextPendingTicket();
+    }
+
     public List<Ticket> findTickets() {
         return ticketRepository.findAll();
     }

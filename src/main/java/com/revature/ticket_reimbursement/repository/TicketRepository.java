@@ -19,4 +19,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
 
     @Query("SELECT t FROM Ticket t WHERE t.madeBy = :madeBy AND t.status = :status")
     List<Ticket> findAllByAccountIdAndTicketStatus(@Param("madeBy") int madeBy, @Param("status") TicketStatus status);
+
+    @Query(value = "SELECT t from Ticket t WHERE t.status = PENDING")
+    Ticket findNextPendingTicket();
 }
